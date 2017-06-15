@@ -5,8 +5,8 @@ package me.michidk.simpletwitterbotapi.events;
  */
 public class HashtagEvent extends KeywordEvent {
 
-    public HashtagEvent(String keyword) {
-        super("#" + keyword, true);
+    public HashtagEvent(String hashtag) {
+        super("#" + hashtag, true);
     }
 
 }
