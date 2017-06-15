@@ -11,7 +11,7 @@ A very simple API/Twitter4J wrapper for Twitter bots.
                 // looking for "lookingForThisKeyword" and "#mySuperCoolHashtag" on Twitter
                 new KeywordEvent("lookingForThisKeyword"), new HashtagEvent("mySuperCoolHashtag")
             ).filter(
-                // exclude tweets that starts with "RT"
+                // exclude tweets which starts with "RT"
                 new RTFilter()
             ).react(
                 // reply "Test!" then "Test 123" and start fromt he beginning
