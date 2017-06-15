@@ -2,6 +2,9 @@ package me.michidk.simpletwitterbotapi.filters;
 
 import twitter4j.Status;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by Michael Lohr on 15.06.2017.
  *
@@ -28,17 +31,11 @@ public class SingleWordFilter extends Filter
         return true;
     }
 
-    private static boolean checkKeyword(String text, String keyword) {
-        if (!text.contains(keyword))
-            return false;
-
-        // Check if keyword is the first word or if there is a space in front of it
-        boolean startValid = text.indexOf(keyword) == 0 || text.contains(" " + keyword);
-
-        // Check if keyword is the last word or if there is a space behind it
-        boolean endValid = text.indexOf(keyword) == text.length() - keyword.length() || text.contains(keyword + " ");
-
-        return startValid && endValid;
+    public static boolean checkKeyword(String text, String keyword) {
+        Pattern pattern = Pattern.compile("(?i)(^|.*\\s)" + keyword + "((\\p{Punct}|\\s).*|$)");
+        Matcher matcher = pattern.matcher(text);
+        System.out.println(keyword + " in \"" + text + "\" :" + matcher.matches());
+        return matcher.matches();
     }
 
 }

@@ -5,7 +5,6 @@ import com.google.common.primitives.Longs;
 import me.michidk.simpletwitterbotapi.TwitterBot;
 import me.michidk.simpletwitterbotapi.events.Event;
 import me.michidk.simpletwitterbotapi.events.FollowEvent;
-import me.michidk.simpletwitterbotapi.events.HashtagEvent;
 import me.michidk.simpletwitterbotapi.events.KeywordEvent;
 import me.michidk.simpletwitterbotapi.filters.Filter;
 import me.michidk.simpletwitterbotapi.filters.SingleWordFilter;
@@ -54,7 +53,7 @@ public class Behaviour {
 
                 currentKeywords.add(keyword.getQueryPart());
 
-                if (keyword.isFilterWholeWords())
+                if (keyword.doesFilterWholeWords())
                     wholeKeywords.add(keyword.getQueryPart());
             } else if (event instanceof FollowEvent) {
                 FollowEvent follow = (FollowEvent) event;

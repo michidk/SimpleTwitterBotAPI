@@ -22,7 +22,7 @@ public class Test {
 
         Behaviour behaviour = BehaviourBuilder.create()
             .listen(
-                new KeywordEvent("lookingForThisKeyword"), new HashtagEvent("mySuperCoolHashtag") // looking for "lookingForThisKeyword" and "#mySuperCoolHashtag" on Twitter
+                new HashtagEvent("mySuperCoolHashtag") // looking for "lookingForThisKeyword" and "#mySuperCoolHashtag" on Twitter
             ).filter(
                 new RTFilter() // exclude tweets that starts with "RT"
             ).react(

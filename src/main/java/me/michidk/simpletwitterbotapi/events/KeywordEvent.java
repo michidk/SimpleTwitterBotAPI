@@ -23,7 +23,7 @@ public class KeywordEvent extends Event<String> {
         return keyword;
     }
 
-    public boolean isFilterWholeWords() {
+    public boolean doesFilterWholeWords() {
         return filterWholeWords;
     }
 }
