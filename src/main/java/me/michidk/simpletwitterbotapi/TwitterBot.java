@@ -1,10 +1,7 @@
 package me.michidk.simpletwitterbotapi;
 
 import me.michidk.simpletwitterbotapi.behaviour.Behaviour;
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import twitter4j.*;
 import twitter4j.conf.Configuration;
 
 import java.util.ArrayList;
@@ -41,7 +38,9 @@ public class TwitterBot {
     }
 
     public void reply(Status tweet, String message) throws TwitterException {
-        twitter4J.updateStatus("@" + tweet.getUser().getScreenName() + " " + message);
+        StatusUpdate reply = new StatusUpdate(message);
+        reply.setInReplyToStatusId(tweet.getInReplyToStatusId());
+        twitter4J.updateStatus(reply);
     }
 
     public Twitter getTwitter4J() {
