@@ -22,7 +22,7 @@ public class QueuedReplyReaction extends Reaction {
 
     @Override
     public void react(TwitterBot bot, Status tweet) throws TwitterException {
-        bot.reply(tweet, getNextReply());
+        bot.replyOrTweet(tweet, getNextReply());
     }
 
     private String getNextReply() {

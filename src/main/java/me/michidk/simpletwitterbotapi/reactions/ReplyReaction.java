@@ -18,7 +18,7 @@ public class ReplyReaction extends Reaction {
 
     @Override
     public void react(TwitterBot bot, Status tweet) throws TwitterException {
-        bot.reply(tweet, reply);
+        bot.replyOrTweet(tweet, reply);
     }
 
 }

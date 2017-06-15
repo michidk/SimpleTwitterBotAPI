@@ -21,7 +21,7 @@ public class RandomReplyReaction extends Reaction {
 
     @Override
     public void react(TwitterBot bot, Status tweet) throws TwitterException {
-        bot.reply(tweet, getRandomReply());
+        bot.replyOrTweet(tweet, getRandomReply());
     }
 
     private String getRandomReply() {

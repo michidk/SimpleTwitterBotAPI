@@ -23,7 +23,8 @@ public class BehaviourStatusListener implements StatusListener {
         String text = status.getText();
         User user = status.getUser();
 
-        behaviour.getLogger().debug(user + ": " + text);
+        if (behaviour.getTwitterBot().isDebug())
+            behaviour.getLogger().info("Received status:" + text + " by " + user.getScreenName());
 
         try {
             for (Reaction reaction : behaviour.getReactions())

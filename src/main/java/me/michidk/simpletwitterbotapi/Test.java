@@ -18,11 +18,6 @@ public class Test {
 
     public static void main(String[] args) {
 
-        Handler[] handlers = Logger.getLogger( "" ).getHandlers();
-        for ( int index = 0; index < handlers.length; index++ ) {
-            handlers[index].setLevel( Level.SEVERE);
-        }
-
         TwitterBot bot = new TwitterBot();  // create a new Twitter bot instance
 
         Behaviour behaviour = BehaviourBuilder.create()
@@ -31,7 +26,7 @@ public class Test {
             ).filter(
                 new RTFilter() // exclude tweets that starts with "RT"
             ).react(
-                new QueuedReplyReaction("Test!", "Test 123")    // reply "Test!" then "Test 123" and start fromt he beginning
+                new QueuedReplyReaction("Test!", "Test 123")    // replyOrTweet "Test!" then "Test 123" and start fromt he beginning
         ).build();
 
         bot.addBehaviour(behaviour); // add the behaviour to the bot instance
