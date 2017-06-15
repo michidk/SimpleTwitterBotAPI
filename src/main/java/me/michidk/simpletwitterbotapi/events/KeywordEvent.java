@@ -6,10 +6,16 @@ package me.michidk.simpletwitterbotapi.events;
 public class KeywordEvent extends Event<String> {
 
     private String keyword;
-
+    private boolean filterWholeWords = false;   // detect only " full words " instead of "fullwords"
 
     public KeywordEvent(String keyword) {
         this.keyword = keyword;
+    }
+
+    public KeywordEvent(String keyword, boolean filterWholeWords) {
+        this(keyword);
+
+        this.filterWholeWords = filterWholeWords;
     }
 
     @Override
@@ -17,4 +23,7 @@ public class KeywordEvent extends Event<String> {
         return keyword;
     }
 
+    public boolean isFilterWholeWords() {
+        return filterWholeWords;
+    }
 }

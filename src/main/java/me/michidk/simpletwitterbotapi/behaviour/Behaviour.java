@@ -5,12 +5,15 @@ import com.google.common.primitives.Longs;
 import me.michidk.simpletwitterbotapi.TwitterBot;
 import me.michidk.simpletwitterbotapi.events.Event;
 import me.michidk.simpletwitterbotapi.events.FollowEvent;
+import me.michidk.simpletwitterbotapi.events.HashtagEvent;
 import me.michidk.simpletwitterbotapi.events.KeywordEvent;
 import me.michidk.simpletwitterbotapi.filters.Filter;
+import me.michidk.simpletwitterbotapi.filters.SingleWordFilter;
 import me.michidk.simpletwitterbotapi.reactions.Reaction;
 import twitter4j.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,9 +33,9 @@ public class Behaviour {
 
 
     protected Behaviour(BehaviourBuilder builder) {
-        this.events = builder.eventList.stream().toArray(Event[]::new);
-        this.filters = builder.filterList.stream().toArray(Filter[]::new);
-        this.reactions = builder.reactionList.stream().toArray(Reaction[]::new);
+        this.events = Iterables.toArray(builder.eventList, Event.class);
+        this.filters = Iterables.toArray(builder.filterList, Filter.class);
+        this.reactions = Iterables.toArray(builder.reactionList, Reaction.class);
     }
 
     public void initialize(TwitterBot twitterBot) {
@@ -42,13 +45,17 @@ public class Behaviour {
 
     private void setupQueries() {
         List<String> currentKeywords = new ArrayList<>();
-        ArrayList<Long> currentFollows = new ArrayList<>();
+        List<String> wholeKeywords = new ArrayList<>();
+        List<Long> currentFollows = new ArrayList<>();
 
         for(Event event : events) {
             if (event instanceof KeywordEvent) {
                 KeywordEvent keyword = (KeywordEvent) event;
 
                 currentKeywords.add(keyword.getQueryPart());
+
+                if (keyword.isFilterWholeWords())
+                    wholeKeywords.add(keyword.getQueryPart());
             } else if (event instanceof FollowEvent) {
                 FollowEvent follow = (FollowEvent) event;
 
@@ -60,8 +67,11 @@ public class Behaviour {
         query = new FilterQuery();
         query.track(Iterables.toArray(currentKeywords, String.class));
         query.follow(Longs.toArray(currentFollows));
-    }
 
+        // fix twitter query detects not only whole words
+        filters = Arrays.copyOf(filters, filters.length + 1);
+        filters[filters.length - 1] = new SingleWordFilter(Iterables.toArray(wholeKeywords, String.class));
+    }
 
     public void start() {
         if (events == null)
