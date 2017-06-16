@@ -34,9 +34,9 @@ public class Example {
         // or do everything in one statement
         bot.addBehaviour(
             BehaviourBuilder.create().listen(
-                    new MentionEvent("schuwi4")
+                new MentionEvent("miichidk")
             ).react(
-                    new LikeReaction()
+                new LikeReaction()
             ).build()
         );
 
