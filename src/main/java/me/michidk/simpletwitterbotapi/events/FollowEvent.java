@@ -3,17 +3,17 @@ package me.michidk.simpletwitterbotapi.events;
 /**
  * Created by Michael Lohr on 20.09.2016.
  */
-public class FollowEvent extends Event<long[]> {
+public class FollowEvent extends Event<Long> {
 
-    private long[] users;
+    private Long users;
 
 
-    public FollowEvent(long... users) {
+    public FollowEvent(Long users) {
         this.users = users;
     }
 
     @Override
-    public long[] getQueryPart() {
+    public Long getQueryPart() {
         return users;
     }
 

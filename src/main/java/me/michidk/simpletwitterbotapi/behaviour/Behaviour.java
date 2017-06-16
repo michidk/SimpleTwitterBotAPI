@@ -1,18 +1,15 @@
 package me.michidk.simpletwitterbotapi.behaviour;
 
-import com.google.common.collect.Iterables;
-import com.google.common.primitives.Longs;
+import me.michidk.simpletwitterbotapi.QueryManager;
 import me.michidk.simpletwitterbotapi.TwitterBot;
 import me.michidk.simpletwitterbotapi.events.Event;
 import me.michidk.simpletwitterbotapi.events.FollowEvent;
 import me.michidk.simpletwitterbotapi.events.KeywordEvent;
 import me.michidk.simpletwitterbotapi.filters.Filter;
-import me.michidk.simpletwitterbotapi.filters.SingleWordFilter;
 import me.michidk.simpletwitterbotapi.reactions.Reaction;
 import twitter4j.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,94 +17,85 @@ import java.util.List;
  */
 public class Behaviour {
 
-    private Event[] events;
-    private Filter[] filters;
-    private Reaction[] reactions;
+    private List<Event> events = new ArrayList<>();
+    private List<Filter> filters = new ArrayList<>();
+    private List<Reaction> reactions = new ArrayList<>();
+
+    private List<String> keywords = new ArrayList<>();
+    private List<Long> followedUserIDs = new ArrayList<>();
 
     private TwitterBot twitterBot;
-    private FilterQuery query;
     private Logger logger = Logger.getLogger(Behaviour.class);
-    private TwitterStream stream = TwitterStreamFactory.getSingleton();
-    private StatusListener statusListener = new BehaviourStatusListener(this);
+
+    private StatusListener statusListener;
 
 
     protected Behaviour(BehaviourBuilder builder) {
-        this.events = Iterables.toArray(builder.eventList, Event.class);
-        this.filters = Iterables.toArray(builder.filterList, Filter.class);
-        this.reactions = Iterables.toArray(builder.reactionList, Reaction.class);
+        this.events = builder.eventList;
+        this.filters = builder.filterList;
+        this.reactions = builder.reactionList;
     }
 
     public void initialize(TwitterBot twitterBot) {
         this.twitterBot = twitterBot;
-        setupQueries();
-    }
 
-    private void setupQueries() {
-        List<String> currentKeywords = new ArrayList<>();
-        List<String> wholeKeywords = new ArrayList<>();
-        List<Long> currentFollows = new ArrayList<>();
-
-        for(Event event : events) {
+        for (Event event : events) {
             if (event instanceof KeywordEvent) {
-                KeywordEvent keyword = (KeywordEvent) event;
-
-                currentKeywords.add(keyword.getQueryPart());
-
-                if (keyword.doesFilterWholeWords())
-                    wholeKeywords.add(keyword.getQueryPart());
+                keywords.add(((KeywordEvent) event).getQueryPart());
             } else if (event instanceof FollowEvent) {
-                FollowEvent follow = (FollowEvent) event;
-
-                for (long id : follow.getQueryPart())
-                    currentFollows.add(id);
+                followedUserIDs.add(((FollowEvent) event).getQueryPart());
             }
         }
 
-        query = new FilterQuery();
-        query.track(Iterables.toArray(currentKeywords, String.class));
-        query.follow(Longs.toArray(currentFollows));
-
-        // fix twitter query detects not only whole words
-        filters = Arrays.copyOf(filters, filters.length + 1);
-        filters[filters.length - 1] = new SingleWordFilter(Iterables.toArray(wholeKeywords, String.class));
+        statusListener = new BehaviourStatusListener(this, events);
     }
 
     public void start() {
-        if (events == null)
-            throw new BehaviourSetupException("Events not set up");
-        if (filters == null)
-            throw new BehaviourSetupException("Filters not set up");
-        if (reactions == null)
-            throw new BehaviourSetupException("Reactions not set up");
+        if (twitterBot == null) {
+            logger.error("TwitterBot not initialized!");
+            return;
+        }
 
-        stream.addListener(statusListener);
-        stream.filter(query);
+        if (events.size() == 0)
+            logger.warn("No events defined");
+        if (filters.size() == 0)
+            logger.warn("No filters defined");
+        if (reactions.size() == 0)
+            logger.warn("No reactions defined");
+
+        QueryManager qm = QueryManager.getInstance();
+        qm.addListener(statusListener);
+        qm.addFollowedUsers(followedUserIDs);
+        qm.addKeywords(keywords);
+
+        if (twitterBot.isDebug())
+            logger.info("Started Behaviour");
     }
 
     public void stop() {
-        stream.removeListener(statusListener);
+        QueryManager qm = QueryManager.getInstance();
+        qm.removeListener(statusListener);
+        qm.removeFollowedUsers(followedUserIDs);
+        qm.removeKeywords(keywords);
+
+        if (twitterBot.isDebug())
+            logger.info("Stopped Behaviour");
     }
 
-
-    protected boolean passFilters(Status status) {
-        for (Filter filter : filters) {
-            if (filter.filter(status))
-                return false;
-        }
-
-        return true;
+    protected List<Event> getEvents() {
+        return events;
     }
 
-    protected Reaction[] getReactions() {
+    protected List<Filter> getFilters() {
+        return filters;
+    }
+
+    protected List<Reaction> getReactions() {
         return reactions;
     }
 
     protected TwitterBot getTwitterBot() {
         return twitterBot;
-    }
-
-    protected Logger getLogger() {
-        return logger;
     }
 
 }

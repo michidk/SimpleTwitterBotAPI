@@ -2,6 +2,8 @@ package me.michidk.simpletwitterbotapi;
 
 import me.michidk.simpletwitterbotapi.behaviour.Behaviour;
 import twitter4j.*;
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.Authorization;
 import twitter4j.conf.Configuration;
 
 import java.util.ArrayList;
@@ -32,6 +34,22 @@ public class TwitterBot {
 
     public TwitterBot(Configuration configuration) {
         twitter4J = new TwitterFactory(configuration).getInstance();
+    }
+
+    public TwitterBot(AccessToken accessToken) {
+        twitter4J = new TwitterFactory().getInstance(accessToken);
+    }
+
+    public TwitterBot(Authorization authorization) {
+        twitter4J = new TwitterFactory().getInstance(authorization);
+    }
+
+    public TwitterBot(Configuration configuration, AccessToken accessToken) {
+        twitter4J = new TwitterFactory(configuration).getInstance(accessToken);
+    }
+
+    public TwitterBot(Configuration configuration, Authorization authorization) {
+        twitter4J = new TwitterFactory(configuration).getInstance(authorization);
     }
 
     public void like(Status tweet) throws TwitterException {
