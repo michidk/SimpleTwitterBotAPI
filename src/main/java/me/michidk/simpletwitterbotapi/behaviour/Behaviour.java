@@ -50,7 +50,7 @@ public class Behaviour {
         statusListener = new BehaviourStatusListener(this, events);
     }
 
-    public void start() {
+    public void configure() {
         if (twitterBot == null) {
             logger.error("TwitterBot not initialized!");
             return;
@@ -72,7 +72,7 @@ public class Behaviour {
             logger.info("Started Behaviour");
     }
 
-    public void stop() {
+    public void unconfigure() {
         QueryManager qm = QueryManager.getInstance();
         qm.removeListener(statusListener);
         qm.removeFollowedUsers(followedUserIDs);

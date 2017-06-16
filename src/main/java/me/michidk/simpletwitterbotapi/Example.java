@@ -26,7 +26,7 @@ public class Example {
             ).filter(
                 new RTFilter()                                      // exclude tweets that starts with "RT, a lot of bots do this
             ).react(
-                new QueuedReplyReaction("Test!", "Test 123") // replyOrTweet "Test!" then "Test 123" and start fromt he beginning
+                new QueuedReplyReaction("Test!", "Test 123") // replyOrTweet "Test!" then "Test 123" and configure fromt he beginning
         ).build();
 
         bot.addBehaviour(behaviour);                                // add the behaviour to the bot instance
@@ -41,6 +41,8 @@ public class Example {
         );
 
         // ... add as many behaviours as you want
+
+        bot.start();
 
     }
 

@@ -12,7 +12,7 @@ A very simple API/Twitter4J wrapper for Twitter bots.
             ).filter(
                 new RTFilter()                                      // exclude tweets that starts with "RT, a lot of bots do this
             ).react(
-                new QueuedReplyReaction("Test!", "Test 123") // replyOrTweet "Test!" then "Test 123" and start fromt he beginning
+                new QueuedReplyReaction("Test!", "Test 123") configure
         ).build();
 
         bot.addBehaviour(behaviour);                                // add the behaviour to the bot instance
@@ -27,6 +27,8 @@ A very simple API/Twitter4J wrapper for Twitter bots.
         );
 
         // ... add as many behaviours as you want
+        
+        bot.start();
 ```
 
 ## Setup

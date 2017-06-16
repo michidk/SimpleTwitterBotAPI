@@ -36,12 +36,12 @@ public class BehaviourStatusListener implements StatusListener {
         User user = status.getUser();
         boolean debug = behaviour.getTwitterBot().isDebug();
 
-        if (debug)
-            logger.info("Received status:" + text + " by " + user.getScreenName());
+        //if (debug)
+            //.info("Received status:" + text + " by " + user.getScreenName());
 
         if (!checkIfKeywordOfCurrentBehaviour(text)) {
-            if (debug)
-                logger.info("Status didn't pass keyword check");
+            //if (debug)
+                //logger.info("Status didn't pass keyword check");
 
             return;
         }

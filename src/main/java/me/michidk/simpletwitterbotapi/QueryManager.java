@@ -30,56 +30,48 @@ public class QueryManager {
 
     public boolean addKeyword(String keyword) {
         boolean result = this.keywords.add(keyword);
-        apply();
 
         return result;
     }
 
     public boolean addKeywords(List<String> keywords) {
         boolean result = this.keywords.addAll(keywords);
-        apply();
 
         return result;
     }
 
     public boolean removeKeyword(String keyword) {
         boolean result = this.keywords.remove(keyword);
-        apply();
 
         return result;
     }
 
     public boolean removeKeywords(List<String> keywords) {
         boolean result = this.keywords.removeAll(keywords);
-        apply();
 
         return result;
     }
 
     public boolean addFollwedUser(Long userID) {
         boolean result = this.followedUserIDs.add(userID);
-        apply();
 
         return result;
     }
 
     public boolean addFollowedUsers(List<Long> usersIDs) {
         boolean result = this.followedUserIDs.addAll(usersIDs);
-        apply();
 
         return result;
     }
 
     public boolean removeFollowedUser(Long userID) {
         boolean result = this.followedUserIDs.remove(userID);
-        apply();
 
         return result;
     }
 
     public boolean removeFollowedUsers(List<Long> userIDs) {
         boolean result = this.followedUserIDs.removeAll(userIDs);
-        apply();
 
         return result;
     }
@@ -100,7 +92,7 @@ public class QueryManager {
         apply();
     }
 
-    private void apply() {
+    public void apply() {
         query.track(Iterables.toArray(keywords, String.class));
         query.follow(Longs.toArray(followedUserIDs));
 

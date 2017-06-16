@@ -90,13 +90,17 @@ public class TwitterBot {
 
     public boolean addBehaviour(Behaviour behaviour) {
         behaviour.initialize(this);
-        behaviour.start();
+        behaviour.configure();
         return behaviours.add(behaviour);
     }
 
     public boolean removeBehaviour(Behaviour behaviour) {
-        behaviour.stop();
+        behaviour.unconfigure();
         return behaviours.remove(behaviour);
+    }
+
+    public void start() {
+        QueryManager.getInstance().apply();
     }
 
     public boolean isDebug() {
