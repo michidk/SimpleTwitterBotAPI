@@ -3,22 +3,30 @@ A very simple API/Twitter4J wrapper for Twitter bots.
 
 ## Example
 ```java
-        // create a new Twitter bot instance
-        TwitterBot bot = new TwitterBot();
+        TwitterBot bot = new TwitterBot();                          // create a new Twitter bot instance
 
         Behaviour behaviour = BehaviourBuilder.create()
             .listen(
-                // looking for "lookingForThisKeyword" and "#mySuperCoolHashtag" on Twitter
-                new KeywordEvent("lookingForThisKeyword"), new HashtagEvent("mySuperCoolHashtag")
+                new KeywordEvent("lookingForThisKeyword"),          // looking for "lookingForThisKeyword" and "#mySuperCoolHashtag" on Twitter
+                new HashtagEvent("mySuperCoolHashtag")              // can also be achieved by calling listen() on the builder multiple times
             ).filter(
-                // exclude tweets which starts with "RT"
-                new RTFilter()
+                new RTFilter()                                      // exclude tweets that starts with "RT, a lot of bots do this
             ).react(
-                // reply "Test!" then "Test 123" and start fromt he beginning
-                new QueuedReplyReaction("Test!", "Test 123")
+                new QueuedReplyReaction("Test!", "Test 123") // replyOrTweet "Test!" then "Test 123" and start fromt he beginning
         ).build();
 
-        bot.addBehaviour(behaviour); // add the behaviour to the bot instance
+        bot.addBehaviour(behaviour);                                // add the behaviour to the bot instance
+
+        // or do everything in one statement
+        bot.addBehaviour(
+            BehaviourBuilder.create().listen(
+                new MentionEvent("miichidk")
+            ).react(
+                new LikeReaction()
+            ).build()
+        );
+
+        // ... add as many behaviours as you want
 ```
 
 ## Setup
