@@ -2,6 +2,7 @@ package me.michidk.simpletwitterbotapi;
 
 import me.michidk.simpletwitterbotapi.behaviour.Behaviour;
 import me.michidk.simpletwitterbotapi.behaviour.BehaviourBuilder;
+import me.michidk.simpletwitterbotapi.events.FollowEvent;
 import me.michidk.simpletwitterbotapi.events.HashtagEvent;
 import me.michidk.simpletwitterbotapi.events.KeywordEvent;
 import me.michidk.simpletwitterbotapi.events.MentionEvent;
@@ -34,7 +35,7 @@ public class Example {
         // or do everything in one statement
         bot.addBehaviour(
             BehaviourBuilder.create().listen(
-                new MentionEvent("miichidk")
+                new FollowEvent(2438716117L)                    // my twitter user id. (find out yours via http://gettwitterid.com/)
             ).react(
                 new LikeReaction()
             ).build()

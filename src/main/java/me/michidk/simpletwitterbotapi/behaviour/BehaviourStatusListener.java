@@ -34,21 +34,12 @@ public class BehaviourStatusListener implements StatusListener {
 
         String text = status.getText();
         User user = status.getUser();
-        boolean debug = behaviour.getTwitterBot().isDebug();
 
-        //if (debug)
-            //.info("Received status:" + text + " by " + user.getScreenName());
-
-        if (!checkIfKeywordOfCurrentBehaviour(text) && !checkIfUserOfCurrentBehaviour(status.getUser().getId())) {
-            //if (debug)
-                //logger.info("Status didn't pass keyword check");
-
+        if (!checkIfKeywordOfCurrentBehaviour(text) && !checkIfUserOfCurrentBehaviour(user.getId()))
             return;
-        }
 
-        if (filter(status)) {
+        if (filter(status))
             return;
-        }
 
         try {
             for (Reaction reaction : behaviour.getReactions())
@@ -89,7 +80,7 @@ public class BehaviourStatusListener implements StatusListener {
                 FollowEvent followEvent = (FollowEvent) event;
                 Long user = followEvent.getQueryPart();
 
-                if (user == id)
+                if (user.longValue() == id.longValue())
                     return true;
 
             }

@@ -10,8 +10,8 @@ public final class KeywordUtils {
 
     public static boolean checkWholeKeyword(String text, String keyword) {
         Pattern pattern = Pattern.compile("(?i)(^|.*\\s)" + keyword + "((\\p{Punct}|\\s).*|$)");
+
         Matcher matcher = pattern.matcher(text);
-        System.out.println(keyword + " in \"" + text + "\" :" + matcher.matches());
         return matcher.matches();
     }
 
