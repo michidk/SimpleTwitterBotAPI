@@ -39,7 +39,7 @@ public class BehaviourStatusListener implements StatusListener {
         //if (debug)
             //.info("Received status:" + text + " by " + user.getScreenName());
 
-        if (!checkIfKeywordOfCurrentBehaviour(text)) {
+        if (!checkIfKeywordOfCurrentBehaviour(text) && !checkIfUserOfCurrentBehaviour(status.getUser().getId())) {
             //if (debug)
                 //logger.info("Status didn't pass keyword check");
 
@@ -73,6 +73,24 @@ public class BehaviourStatusListener implements StatusListener {
                     if (text.toLowerCase().contains(keyword.toLowerCase()))
                         return true;
                 }
+
+            }
+
+        }
+
+        return false;
+    }
+
+    private boolean checkIfUserOfCurrentBehaviour(Long id) {
+        for (Event event : events) {
+
+            if (event instanceof FollowEvent) {
+
+                FollowEvent followEvent = (FollowEvent) event;
+                Long user = followEvent.getQueryPart();
+
+                if (user == id)
+                    return true;
 
             }
 

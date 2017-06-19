@@ -5,16 +5,16 @@ package me.michidk.simpletwitterbotapi.events;
  */
 public class FollowEvent extends Event<Long> {
 
-    private Long users;
+    private Long user;
 
 
-    public FollowEvent(Long users) {
-        this.users = users;
+    public FollowEvent(Long user) {
+        this.user = user;
     }
 
     @Override
     public Long getQueryPart() {
-        return users;
+        return user;
     }
 
 }
