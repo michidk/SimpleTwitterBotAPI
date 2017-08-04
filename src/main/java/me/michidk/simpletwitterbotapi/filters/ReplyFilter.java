@@ -11,7 +11,7 @@ public class ReplyFilter extends Filter {
 
     @Override
     public boolean filter(Status tweet) {
-        return tweet.getInReplyToStatusId() != -1;
+        return tweet.getText().startsWith("@");
     }
 
 }
